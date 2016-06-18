@@ -6,4 +6,4 @@ This project is a small implementation of JMS services.
 
 ## Apply eclipse project facet
 The source project doesn't have a ecplise java project facet, to do so:
-`Right click on project > Properties > Convert to faceted form...> Ok`
+`Right click on project > Properties > Project Facets > Convert to faceted form...> Ok`
