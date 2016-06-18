@@ -1,15 +1,14 @@
-package jms;
+package app;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-public class Main {
-
-	public static void main(String[] args) throws NamingException {
+public class Client {
+	
+	
+	public static void main(String[] args) {
+		
+		//Thread que manda mensagem{
 //		String stockData;
-		Context namingContext = new InitialContext();
-//		ConnectionFactory connectionFactory = (ConnectionFactory) namingContext
+//		Context namingContext = new InitialContext();
+//		ConnectionFactoryConnectionFactory = (ConnectionFactory) namingContext
 //				.lookup("myCF");
 //		Queue stockQueue = (Queue) namingContext.lookup("StockSource");
 //		Connection connection = connectionFactory.createConnection();
@@ -20,10 +19,11 @@ public class Main {
 //		connection.start();
 //		producer.send(message);
 //		connection.close();
+		//}
+			
 		
 		
-		
-		
+		//Thread subscriber que recebe as mensagens{
 //		ConnectionFactory connectionFactory;
 //		QueuestockQueue; 
 //		Connection connection; 
@@ -37,8 +37,7 @@ public class Main {
 //		receiver = session.createConsumer (stockQueue); 
 //		connection.start(); 
 //		stockMessage = (TextMessage) receiver.receive ();
-		
-		
-		
+		//}
 	}
+
 }
