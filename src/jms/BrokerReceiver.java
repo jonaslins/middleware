@@ -6,12 +6,12 @@ import java.net.Socket;
 import java.util.Hashtable;
 
 public class BrokerReceiver implements Runnable{
-	
+
 	private ServerSocket serverSocket;
 	private int port;
-	
+	private Thread consumerThread ;
 	private Hashtable<String, TopicContext> hashtable;
-	
+
 	public BrokerReceiver(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
@@ -28,40 +28,39 @@ public class BrokerReceiver implements Runnable{
 				Marshaller marshaller = new Marshaller();
 				ServerMessageHandler smh = new ServerMessageHandler(connectionSocket);
 				Message message = marshaller.unmarshall(smh.receive());
-				
+
 				System.out.println(message.getType());
-				
+
 				String topicName = message.getDestination();
 				switch (message.getType()) {
-					case "pub":
-						
-						//TopicService
-						if(!hashtable.containsKey(topicName)){
-							hashtable.put(topicName, new TopicContext(topicName));
-						}						
+				
+				case "pub":
+
+					//TopicService
+					if(!hashtable.containsKey(topicName)){
+						hashtable.put(topicName, new TopicContext(topicName));
 						TopicContext topicContext = hashtable.get(topicName);
 						topicContext.getMensagens().add(message);
-						
-						
-						
-
-						break;
-					case "sub":				
-						
-						//TopicSender
-						//tem que ser uma thread <- session
-						topicContext = hashtable.get(topicName);
-						String hostName = connectionSocket.getInetAddress().getHostName();
-						topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort()));
-					
-						//Thread que vai comunicar para o cliente quando houver uma modificação no topico
 						TopicSender topicSender = new TopicSender(topicContext);
-						Thread consumerThread = new Thread(topicSender);
+						consumerThread = new Thread(topicSender);
 						consumerThread.start();
-						
-						break;					
-					default:
-						break;
+					}else{						
+						TopicContext topicContext = hashtable.get(topicName);
+						topicContext.getMensagens().add(message);
+						consumerThread.notify();
+					}
+
+					break;
+				case "sub":			
+					TopicContext topicContext = hashtable.get(topicName);
+					String hostName = connectionSocket.getInetAddress().getHostName();
+					topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort(),connectionSocket));
+
+
+
+					break;					
+				default:
+					break;
 				}
 			}
 		} catch (Exception e) {
