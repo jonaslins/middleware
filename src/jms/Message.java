@@ -9,6 +9,9 @@ public class Message {
 	private String body; //conteúdo da mensagem
 	private long timestamp; //hora que chegou no broker
 	
+	public Message(){
+	}
+	
 	public Message(String destination) {
 		super();
 		this.destination = destination;

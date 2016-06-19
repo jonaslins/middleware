@@ -1,44 +1,49 @@
 package jms;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+
 
 public class Main {
 
-	public static void main(String[] args) throws NamingException {
-//		String stockData;
-		Context namingContext = new InitialContext();
-//		ConnectionFactory connectionFactory = (ConnectionFactory) namingContext
-//				.lookup("myCF");
-//		Queue stockQueue = (Queue) namingContext.lookup("StockSource");
-//		Connection connection = connectionFactory.createConnection();
-//		Session session = connection.createSession(Session.AUTO_ACKNOWLEDGE);
-//		TextMessage message = session.createTextMessage();
-//		message.setText(stockData);
-//		MessageProducer producer = session.createProducer(stockQueue);
-//		connection.start();
-//		producer.send(message);
-//		connection.close();
+	public static void main(String[] args)throws Exception{
+		// get the initial context
+		//I AM THE ADMIN
+		Context ctx = new Context();
+		ctx.bind("chat1", new Topic("chat1"));
+		ctx.bind("connectionFactory", new TopicConnectionFactory("localhost", 8080));
+//     + broker <-TopicConnectionFactory
+//		- topic(chat1) <- Topic
+//		- topic(chat2)
+//		- topic(chat3)
+//		
+
+		// lookup the topic object 
+		//if there's no topic, create a new one
+		Topic topic = (Topic)ctx.lookup("chat1");
+
+		// lookup the topic connection factory
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
+				.lookup("connectionFactory");
+
+		// create a topic connection
+		TopicConnection topicConn = connFactory.createTopicConnection();
+
+		// create a topic session
+//		TopicSession topicSession = topicConn.createTopicSession(false,
+//				Session.AUTO_ACKNOWLEDGE);
+		TopicSession topicSession = topicConn.createTopicSession();
+
+		// create a topic publisher
+		TopicPublisher topicPublisher = topicSession.createPublisher(topic);
+
+		// create a simple message
+		Message message = topicSession.createTextMessage("middleware é a disciplina mais legal");
+
+		System.out.println("created durable subscriber mySub");
 		
-		
-		
-		
-//		ConnectionFactory connectionFactory;
-//		QueuestockQueue; 
-//		Connection connection; 
-//		String stockData;  
-//		TextMessage stockMessage; 
-//		Contextmessaging = newInitialContext(); 
-//		connectionFactory = (ConnectionFactory) messaging.lookup ("ConnectionFactory"); 
-//		stockQueue =  (Queue) messaging.lookup ("StockSource"); 
-//		connection = ConnectionFactory.createConnection (); 
-//		session = connection.createSession (false, Session.AUTO_ACKNOWLEDGE); 
-//		receiver = session.createConsumer (stockQueue); 
-//		connection.start(); 
-//		stockMessage = (TextMessage) receiver.receive ();
-		
-		
+//		topicConn.start(); 
+		topicPublisher.publish(message); 		
+		// close the topic connection
+		topicConn.close();		
 		
 	}
 }
