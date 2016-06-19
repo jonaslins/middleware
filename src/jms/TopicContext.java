@@ -11,16 +11,6 @@ public class TopicContext {
 		this.mensagens = new Vector<Message>();
 		this.subscribers = new Vector<Subscriber>();
 	}
-	
-	
-	private void addMessage(Message msg){
-		this.mensagens.add(msg);
-	}
-	
-	private void removeMessage(Message msg){
-		int index = this.mensagens.indexOf(msg);
-		this.mensagens.remove(index);
-	}
 
 
 	public String getName() {

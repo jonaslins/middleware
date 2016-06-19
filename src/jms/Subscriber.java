@@ -4,7 +4,7 @@ public class Subscriber {
 	private int port;
 	private String ip;
 	
-	public Subscriber(int port, String ip) {
+	public Subscriber(String ip, int port) {
 		super();
 		this.port = port;
 		this.ip = ip;
