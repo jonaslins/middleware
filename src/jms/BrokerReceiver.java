@@ -9,10 +9,14 @@ public class BrokerReceiver implements Runnable{
 	
 	private ServerSocket serverSocket;
 	private int port;
-
+	
+	private Hashtable<String, Object> hashtable;
+	
 	public BrokerReceiver(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
+		hashtable = new Hashtable<String, Object>();
+
 	}
 
 	@Override
@@ -24,20 +28,23 @@ public class BrokerReceiver implements Runnable{
 				Marshaller marshaller = new Marshaller();
 				ServerMessageHandler smh = new ServerMessageHandler(connectionSocket);
 				Message message = marshaller.unmarshall(smh.receive());
+				System.out.println(message.getType());
 				
 				switch (message.getType()) {
-				case "pub":
-					//TopicService		
-					Hashtable<String, Object> hashtable = new Hashtable<String, Object>();
-					String topico = message.getDestination();
-					hashtable.put(topico, message.getBody());					
-					break;
-				case "sub":				
+					case "pub":
+						//TopicService		
+						String topico = message.getDestination();
+						hashtable.put(topico, message.getBody());					
+						break;
+					case "sub":				
+						
+						//TopicSender
+						
+						
+						break;
 					
-					break;
-				
-				default:
-					break;
+					default:
+						break;
 				}
 			}
 		} catch (Exception e) {
