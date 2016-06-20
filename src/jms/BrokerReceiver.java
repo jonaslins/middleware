@@ -29,7 +29,7 @@ public class BrokerReceiver implements Runnable{
 				ServerMessageHandler smh = new ServerMessageHandler(connectionSocket);
 				Message message = marshaller.unmarshall(smh.receive());
 
-				System.out.println(message.getType());
+				System.out.println("Broker recebeu uma mensagem de um "+message.getType());
 
 				String topicName = message.getDestination();
 				switch (message.getType()) {
@@ -47,7 +47,7 @@ public class BrokerReceiver implements Runnable{
 					}else{						
 						TopicContext topicContext = hashtable.get(topicName);
 						topicContext.getMensagens().add(message);
-						consumerThread.notify();
+						//consumerThread.notify();
 					}
 
 					break;
@@ -55,8 +55,6 @@ public class BrokerReceiver implements Runnable{
 					TopicContext topicContext = hashtable.get(topicName);
 					String hostName = connectionSocket.getInetAddress().getHostName();
 					topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort(),connectionSocket));
-
-
 
 					break;					
 				default:

@@ -31,19 +31,32 @@ public class Main {
 //		TopicSession topicSession = topicConn.createTopicSession(false,
 //				Session.AUTO_ACKNOWLEDGE);
 		TopicSession topicSession = topicConn.createTopicSession();
-
+		TopicSession topicSession1 = topicConn.createTopicSession();
+		TopicSession topicSession2 = topicConn.createTopicSession();
+		
 		// create a topic publisher
 		TopicPublisher topicPublisher = topicSession.createPublisher(topic);
-
+		
+		// create a topic subscriber
+		TopicSubscriber topicSubscriber= topicSession1.createSubscriber(topic);
+		
+		// create a topic publisher
+		TopicPublisher topicPublisher1 = topicSession2.createPublisher(topic);
+				
+		
 		// create a simple message
 		Message message = topicSession.createTextMessage("middleware é a disciplina mais legal");
-
-		System.out.println("created durable subscriber mySub");
+		Message message1 = topicSession1.createTextMessage("");
+		Message message2 = topicSession2.createTextMessage("vamos passar em middleware");
 		
 //		topicConn.start(); 
-		topicPublisher.publish(message); 		
-		// close the topic connection
-		topicConn.close();		
+		topicPublisher.publish(message); 	
+		//topicConn.close();	
+		topicSubscriber.subscribe(message1);
+		topicPublisher1.publish(message2);
+		topicSubscriber.recive();
 		
+		// close the topic connection
+		while(true);
 	}
 }

@@ -16,6 +16,12 @@ public class TopicSender implements Runnable{
 		Marshaller marshaller = new Marshaller();
 		
 		while(true){
+			
+			try {	//espera um pouco alguem dar um subscribe
+				Thread.sleep(10000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			for(int i =0;i<topicContext.mensagens.size();i++){
 				for(int j =0;j<topicContext.subscribers.size();j++){
 					try {
@@ -29,11 +35,7 @@ public class TopicSender implements Runnable{
 				}
 			}
 			topicContext.mensagens = new Vector<Message>();
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
 		}
 		
 	}

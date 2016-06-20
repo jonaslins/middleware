@@ -15,6 +15,10 @@ public class TopicSession implements Runnable{
 		return new TopicPublisher(topic, socket);
 	}
 
+	public TopicSubscriber createSubscriber(Topic topic) throws IOException {
+		return new TopicSubscriber(topic, socket);
+	}
+
 	@Override
 	public void run() {
 	}
