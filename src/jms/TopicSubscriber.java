@@ -51,9 +51,9 @@ public class TopicSubscriber {
 	
 	public void recive() throws IOException, ClassNotFoundException {
 		while(true){
-		byte[] m = smh.receive();
-		Message msg = marshaller.unmarshall(m);
-		System.out.println("Subcriber recebeu a mensagem : " +msg.getBody());
+			byte[] m = smh.receive();
+			Message msg = marshaller.unmarshall(m);
+			System.out.println("Subcriber recebeu a mensagem : " +msg.getBody());
 		}
 	}
 	

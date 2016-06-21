@@ -1,4 +1,13 @@
-package jms;
+package app;
+
+import jms.Context;
+import jms.Message;
+import jms.Topic;
+import jms.TopicConnection;
+import jms.TopicConnectionFactory;
+import jms.TopicPublisher;
+import jms.TopicSession;
+import jms.TopicSubscriber;
 
 
 
