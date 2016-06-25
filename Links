@@ -1,1 +1,12 @@
-http://archive.oreilly.com/pub/a/onjava/excerpt/jms_ch2/index.html?page=4
+http://archive.oreilly.com/pub/a/onjava/excerpt/jms_ch2/index.html?page=4 
+O que esse link diz de importante: 
+"
+When the TopicSubscriber receives a message from its topic, 
+it invokes the onMessage( ) method of its MessageListener objects.
+The Chat class itself implements the MessageListener interface
+and implements the onMessage( ) method.
+
+The Chat class is a MessageListener type, and therefore registers itself with the TopicSubscriber in its constructor:
+TopicSubscriber subscriber = subSession.createSubscriber(chatTopic);
+subscriber.setMessageListener(this);
+"
