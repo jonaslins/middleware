@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ServerMessageHandler{
-	private Socket connectionSocket;
 	private DataOutputStream outToClient;
 	private DataInputStream inFromClient;
 	
 	public ServerMessageHandler(Socket connectionSocket) throws IOException {
-		this.connectionSocket = connectionSocket;
 		outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		inFromClient = new DataInputStream(connectionSocket.getInputStream());
 	}

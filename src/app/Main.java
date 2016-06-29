@@ -8,6 +8,7 @@ import jms.TopicConnectionFactory;
 import jms.TopicPublisher;
 import jms.TopicSession;
 import jms.TopicSubscriber;
+import jms.TopicSubscriberListener;
 
 
 
@@ -19,19 +20,13 @@ public class Main {
 		Context ctx = new Context();
 		ctx.bind("chat1", new Topic("chat1"));
 		ctx.bind("connectionFactory", new TopicConnectionFactory("localhost", 8080));
-//     + broker <-TopicConnectionFactory
-//		- topic(chat1) <- Topic
-//		- topic(chat2)
-//		- topic(chat3)
-//		
 
 		// lookup the topic object 
 		//if there's no topic, create a new one
 		Topic topic = (Topic)ctx.lookup("chat1");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
-				.lookup("connectionFactory");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("connectionFactory");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();
@@ -42,7 +37,7 @@ public class Main {
 		TopicSession topicSession = topicConn.createTopicSession();
 		TopicSession topicSession1 = topicConn.createTopicSession();
 		TopicSession topicSession2 = topicConn.createTopicSession();
-		
+		TopicSession topicSession3 = topicConn.createTopicSession();
 		// create a topic publisher
 		TopicPublisher topicPublisher = topicSession.createPublisher(topic);
 		
@@ -52,20 +47,21 @@ public class Main {
 		// create a topic publisher
 		TopicPublisher topicPublisher1 = topicSession2.createPublisher(topic);
 				
-		
+		// create a topic subscriber
+		TopicSubscriber topicSubscriber2= topicSession3.createSubscriber(topic);
+				
 		// create a simple message
 		Message message = topicSession.createTextMessage("middleware é a disciplina mais legal");
-		Message message1 = topicSession1.createTextMessage("");
 		Message message2 = topicSession2.createTextMessage("vamos passar em middleware");
-		
-//		topicConn.start(); 
 		topicPublisher.publish(message); 	
-		//topicConn.close();	
-		topicSubscriber.subscribe(message1);
+		TopicSubscriberListener listener = new TopicSubscriberListener(); 
+		topicSubscriber.setMessageListener(listener,1);
+		TopicSubscriberListener listener2 = new TopicSubscriberListener(); 
+		topicSubscriber2.setMessageListener(listener2,2);
 		topicPublisher1.publish(message2);
-		topicSubscriber.recive();
-		
-		// close the topic connection
+		topicConn.start();
+		//espear um tempo para fechar
+		 //topicConn.close();
 		while(true);
 	}
 }

@@ -1,13 +1,10 @@
 package jms;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class TopicPublisher {
 	private Topic topicDestination; 
-	private Socket socket;
 	Marshaller marshaller;
 	ServerMessageHandler smh;
 	
@@ -18,9 +15,15 @@ public class TopicPublisher {
 	}
 
 	public void publish(Message message) throws IOException {
-		message.setDestination(topicDestination.getName());
-		message.setType("pub");
-		smh.send(marshaller.marshall(message));
+		message.setJMSDestination(topicDestination.getName());
+		smh.send(Marshaller.marshall(message));
+	}
+	
+	public void ackpublish() throws IOException {
+		InterMessage message = new InterMessage();
+		message.setJMSDestination(topicDestination.getName());
+		message.setJMSType(1); //1 - para publisher
+		smh.send(Marshaller.marshall(message));
 	}
 
 }

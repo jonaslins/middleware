@@ -13,8 +13,6 @@ public class TopicSender implements Runnable{
 
 	@Override
 	public void run() {
-		Marshaller marshaller = new Marshaller();
-		
 		while(true){
 			
 			try {	//espera um pouco alguem dar um subscribe
@@ -23,9 +21,10 @@ public class TopicSender implements Runnable{
 				e1.printStackTrace();
 			}
 			for(int i =0;i<topicContext.mensagens.size();i++){
+				System.out.println("o total de mensagens nesse topico eh "+topicContext.mensagens.size());
 				for(int j =0;j<topicContext.subscribers.size();j++){
 					try {
-						byte[] message = marshaller.marshall(topicContext.mensagens.get(i));
+						byte[] message = Marshaller.marshall(topicContext.mensagens.get(i));
 						Socket sckt = topicContext.subscribers.get(j).getSocket();
 						ServerMessageHandler smh = new ServerMessageHandler(sckt);
 						smh.send(message);

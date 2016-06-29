@@ -3,18 +3,21 @@ package jms;
 import java.io.IOException;
 import java.net.Socket;
 
-public class TopicSubscriber {
+public class TopicSubscriber extends Thread{
 	private Topic topicDestination; 
 	private Socket socket;
 	Marshaller marshaller;
 	ServerMessageHandler smh;
-		
+	private MessageListener messageListener;
+	int id;
+	boolean cancel = false;
 	
 	public TopicSubscriber(Topic topicDestination, Socket socket) throws IOException {
 		this.topicDestination = topicDestination;
 		this.socket = socket;
 		this.marshaller = new Marshaller();
 		this.smh = new ServerMessageHandler(socket);
+		this.cancel = false;
 	}
 	
 	
@@ -43,19 +46,36 @@ public class TopicSubscriber {
 		this.smh = smh;
 	}
 	
-	public void subscribe(Message message) throws IOException {
-		message.setDestination(topicDestination.getName());
-		message.setType("sub");
+	public void subscribe() throws IOException {
+		InterMessage message = new InterMessage();
+		message.setJMSDestination(topicDestination.getName());
+		message.setJMSType(2);//2 para subscriber
 		smh.send(marshaller.marshall(message));
 	}
 	
-	public void recive() throws IOException, ClassNotFoundException {
-		while(true){
+	public Message recive() throws IOException, ClassNotFoundException {
 			byte[] m = smh.receive();
-			Message msg = marshaller.unmarshall(m);
-			System.out.println("Subcriber recebeu a mensagem : " +msg.getBody());
+			Message msg = (Message) marshaller.unmarshall(m);
+			return msg;
+	}
+	public void setMessageListener(MessageListener listener,int id) throws IOException, ClassNotFoundException {
+			this.messageListener = listener;	
+			this.id = id;
+	}
+	
+	public void run(){
+		while(!cancel){
+		try {
+			Message msg = recive();
+			this.messageListener.onMessage(msg,id);
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 		}
 	}
 	
+	public void setCancel(boolean cancel){
+		this.cancel = cancel;
+	}
 	
 }
