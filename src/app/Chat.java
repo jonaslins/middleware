@@ -14,7 +14,7 @@ public class Chat implements Runnable {
 	private String chat;
 	private int chatID;
 
-	public Chat(String chat,int chatID){
+	public Chat(String chat, int chatID){
 		this.chat = chat;
 		this.chatID = chatID;
 	}
@@ -62,9 +62,9 @@ public class Chat implements Runnable {
 
 			topicPublisher.publish(message); 	
 			TopicSubscriberListener listener = new TopicSubscriberListener(); 
-			topicSubscriber.setMessageListener(listener,chatID);
+			topicSubscriber.setMessageListener(listener);
 			TopicSubscriberListener listener2 = new TopicSubscriberListener();
-			topicSubscriber2.setMessageListener(listener2,chatID);
+			topicSubscriber2.setMessageListener(listener2);
 			topicPublisher1.publish(message2);
 			topicConn.start();
 			//Thread.sleep(1000);

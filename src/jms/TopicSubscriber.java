@@ -9,7 +9,6 @@ public class TopicSubscriber extends Thread{
 	Marshaller marshaller;
 	ServerMessageHandler smh;
 	private MessageListener messageListener;
-	int id;
 	boolean cancel = false;
 	
 	public TopicSubscriber(Topic topicDestination, Socket socket) throws IOException {
@@ -58,16 +57,15 @@ public class TopicSubscriber extends Thread{
 			Message msg = (Message) marshaller.unmarshall(m);
 			return msg;
 	}
-	public void setMessageListener(MessageListener listener,int id) throws IOException, ClassNotFoundException {
+	public void setMessageListener(MessageListener listener) throws IOException, ClassNotFoundException {
 			this.messageListener = listener;	
-			this.id = id;
 	}
 	
 	public void run(){
 		while(!cancel){
 		try {
 			Message msg = recive();
-			this.messageListener.onMessage(msg,id);
+			this.messageListener.onMessage(msg);
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}

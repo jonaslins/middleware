@@ -2,6 +2,7 @@ package jms;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Vector;
 
 public class TopicSender implements Runnable{
@@ -28,7 +29,9 @@ public class TopicSender implements Runnable{
 						Socket sckt = topicContext.subscribers.get(j).getSocket();
 						ServerMessageHandler smh = new ServerMessageHandler(sckt);
 						smh.send(message);
-					} catch (IOException e) {
+					}  catch (SocketException e) { // significa que a conexão não existe mais
+						// TODO: handle exception
+					}catch (IOException e) {
 						e.printStackTrace();
 					}
 				}

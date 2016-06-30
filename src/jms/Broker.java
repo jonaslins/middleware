@@ -35,14 +35,14 @@ public class Broker implements Runnable{
 				try {
 				connectionSocket = serverSocket.accept();	
 				ServerMessageHandler smh = new ServerMessageHandler(connectionSocket);
-				InterMessage message1 = (InterMessage) Marshaller.interUnmarshall(smh.receive());
+				InterMessage interMessage = (InterMessage) Marshaller.interUnmarshall(smh.receive());
 				String tipo ="susbcriber";
-				if(message1.getJMSType()==1){
+				if(interMessage.getJMSType()==1){
 					tipo = "publisher";					
 				}
 				System.out.println("Broker recebeu uma mensagem de um "+tipo);
-				String topicName = message1.getJMSDestination();
-				if(message1.getJMSType()==2){//subscriber
+				String topicName = interMessage.getJMSDestination();
+				if(interMessage.getJMSType()==2){//subscriber
 					TopicContext topicContext = hashtable.get(topicName);
 					String hostName = connectionSocket.getInetAddress().getHostName();
 					topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort(),connectionSocket));

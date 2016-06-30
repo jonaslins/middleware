@@ -16,13 +16,13 @@ public class TopicSession {
 	public TopicPublisher createPublisher(Topic topic) throws IOException {
 		this.topicPublisher =  new TopicPublisher(topic, socket);
 		this.topicPublisher.ackpublish();
-		 return topicPublisher;
+		return topicPublisher;
 	}
 
 	public TopicSubscriber createSubscriber(Topic topic) throws IOException {
-		 this.topicSubscriber = new TopicSubscriber(topic, socket);
-		 topicSubscriber.subscribe();
-		 return topicSubscriber;
+		this.topicSubscriber = new TopicSubscriber(topic, socket);
+		topicSubscriber.subscribe();
+		return topicSubscriber;
 	}
 
 	public Message createTextMessage(String textMessage) {
@@ -47,6 +47,6 @@ public class TopicSession {
 		this.topicPublisher = topicPublisher;
 	}
 
-	
-	
+
+
 }

@@ -8,8 +8,8 @@ public class ConnectionPublish extends Thread{
 	private Socket connectionSocket;
 	private ServerMessageHandler smh ;
 	private TopicContext topicContext;
-	
-	public ConnectionPublish(Socket connectionSocket,TopicContext topicContext) throws IOException{
+
+	public ConnectionPublish(Socket connectionSocket, TopicContext topicContext) throws IOException{
 		this.connectionSocket = connectionSocket;
 		this.smh = new ServerMessageHandler(this.connectionSocket);
 		this.topicContext = topicContext;
@@ -18,9 +18,8 @@ public class ConnectionPublish extends Thread{
 
 	@Override
 	public void run() {
-		Message message = null;
-
-			
+		while(true){
+			Message message = null;
 			try {
 				message = (Message) Marshaller.unmarshall(smh.receive());
 			} catch (ClassNotFoundException e) {
@@ -30,12 +29,12 @@ public class ConnectionPublish extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("o broker recebeu foi " +message.getTextMessage());
+			System.out.println("o broker recebeu " +message.getTextMessage());
 			topicContext.getMensagens().add((Message) message);
-			
-		
+		}
+
 	}
-	}
+}
 
 
 
