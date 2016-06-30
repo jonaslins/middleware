@@ -27,7 +27,7 @@ public class TopicSender implements Runnable{
 					try {
 						byte[] message = Marshaller.marshall(topicContext.mensagens.get(i));
 						Socket sckt = topicContext.subscribers.get(j).getSocket();
-						ServerMessageHandler smh = new ServerMessageHandler(sckt);
+						MessageHandler smh = new MessageHandler(sckt);
 						smh.send(message);
 					}  catch (SocketException e) { // significa que a conexão não existe mais
 						// TODO: handle exception

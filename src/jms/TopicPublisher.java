@@ -6,12 +6,12 @@ import java.net.Socket;
 public class TopicPublisher {
 	private Topic topicDestination; 
 	Marshaller marshaller;
-	ServerMessageHandler smh;
+	MessageHandler smh;
 	
 	public TopicPublisher(Topic topicDestination, Socket socket) throws IOException {
 		this.topicDestination = topicDestination;
 		marshaller = new Marshaller();
-		smh = new ServerMessageHandler(socket);
+		smh = new MessageHandler(socket);
 	}
 
 	public void publish(Message message) throws IOException {

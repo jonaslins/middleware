@@ -6,12 +6,12 @@ import java.util.Hashtable;
 
 public class ConnectionPublish extends Thread{
 	private Socket connectionSocket;
-	private ServerMessageHandler smh ;
+	private MessageHandler smh ;
 	private TopicContext topicContext;
 
 	public ConnectionPublish(Socket connectionSocket, TopicContext topicContext) throws IOException{
 		this.connectionSocket = connectionSocket;
-		this.smh = new ServerMessageHandler(this.connectionSocket);
+		this.smh = new MessageHandler(this.connectionSocket);
 		this.topicContext = topicContext;
 	}
 

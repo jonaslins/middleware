@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class SubscriberReciver implements Runnable {
 	Marshaller marshaller;
-	ServerMessageHandler smh;
+	MessageHandler smh;
 	
-	public SubscriberReciver(Marshaller marshaller, ServerMessageHandler smh) {
+	public SubscriberReciver(Marshaller marshaller, MessageHandler smh) {
 		this.marshaller = marshaller;
 		this.smh = smh;
 	}

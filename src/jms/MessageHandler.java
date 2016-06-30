@@ -5,11 +5,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ServerMessageHandler{
+public class MessageHandler{
 	private DataOutputStream outToClient;
 	private DataInputStream inFromClient;
 	
-	public ServerMessageHandler(Socket connectionSocket) throws IOException {
+	public MessageHandler(Socket connectionSocket) throws IOException {
 		outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		inFromClient = new DataInputStream(connectionSocket.getInputStream());
 	}

@@ -7,7 +7,7 @@ public class TopicSubscriber extends Thread{
 	private Topic topicDestination; 
 	private Socket socket;
 	Marshaller marshaller;
-	ServerMessageHandler smh;
+	MessageHandler smh;
 	private MessageListener messageListener;
 	boolean cancel = false;
 	
@@ -15,7 +15,7 @@ public class TopicSubscriber extends Thread{
 		this.topicDestination = topicDestination;
 		this.socket = socket;
 		this.marshaller = new Marshaller();
-		this.smh = new ServerMessageHandler(socket);
+		this.smh = new MessageHandler(socket);
 		this.cancel = false;
 	}
 	
@@ -38,10 +38,10 @@ public class TopicSubscriber extends Thread{
 	public void setMarshaller(Marshaller marshaller) {
 		this.marshaller = marshaller;
 	}
-	public ServerMessageHandler getSmh() {
+	public MessageHandler getSmh() {
 		return smh;
 	}
-	public void setSmh(ServerMessageHandler smh) {
+	public void setSmh(MessageHandler smh) {
 		this.smh = smh;
 	}
 	
