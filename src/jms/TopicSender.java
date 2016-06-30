@@ -16,7 +16,7 @@ public class TopicSender implements Runnable{
 		while(true){
 			
 			try {	//espera um pouco alguem dar um subscribe
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}

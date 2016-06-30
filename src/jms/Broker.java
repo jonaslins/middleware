@@ -40,14 +40,14 @@ public class Broker implements Runnable{
 				if(message1.getJMSType()==1){
 					tipo = "publisher";					
 				}
-				//System.out.println("Broker recebeu uma mensagem de um "+tipo);
+				System.out.println("Broker recebeu uma mensagem de um "+tipo);
 				String topicName = message1.getJMSDestination();
-				if(message1.getJMSType()==2){
+				if(message1.getJMSType()==2){//subscriber
 					TopicContext topicContext = hashtable.get(topicName);
 					String hostName = connectionSocket.getInetAddress().getHostName();
 					topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort(),connectionSocket));
 					
-				}else{
+				}else{ //publish
 					TopicContext topicContext = null;
 					if(!hashtable.containsKey(topicName)){
 						hashtable.put(topicName, new TopicContext(topicName));
