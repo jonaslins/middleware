@@ -59,7 +59,7 @@ public class Broker implements Runnable{
 						topicContext = hashtable.get(topicName);
 					}
 					
-					publishThread  = new ConnectionPublish(connectionSocket, topicContext);
+					publishThread  = new ConnectionPublisher(connectionSocket, topicContext);
 					publishThread.start();
 					
 				}

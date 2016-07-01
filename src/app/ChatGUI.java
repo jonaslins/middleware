@@ -1,19 +1,22 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.Observable;
 
 import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import jms.Context;
@@ -39,8 +42,25 @@ public class ChatGUI extends JFrame implements MessageListener {
 
 	public ChatGUI(String title) throws Exception {
 		super(title);
+		showChatLists();
 		buildGUI();
 		connectChat();
+	}
+	
+	public void showChatLists(){
+		
+		DefaultListModel listModel = new DefaultListModel();
+		listModel.addElement("Jane Doe");
+		listModel.addElement("John Smith");
+		listModel.addElement("Kathy Green");
+		JList list = new JList(listModel); //data has type Object[]
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setVisibleRowCount(-1);
+		JScrollPane listScroller = new JScrollPane(list);
+		listScroller.setPreferredSize(new Dimension(250, 80));
+		
+		add(list, BorderLayout.SOUTH);
 	}
 
 	public static void main(String[] args) throws Exception {

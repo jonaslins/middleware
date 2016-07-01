@@ -2,14 +2,15 @@ package jms;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Hashtable;
 
-public class ConnectionPublish extends Thread{
+public class ConnectionPublisher extends Thread{
 	private Socket connectionSocket;
 	private MessageHandler smh ;
 	private TopicContext topicContext;
 
-	public ConnectionPublish(Socket connectionSocket, TopicContext topicContext) throws IOException{
+	public ConnectionPublisher(Socket connectionSocket, TopicContext topicContext) throws IOException{
 		this.connectionSocket = connectionSocket;
 		this.smh = new MessageHandler(this.connectionSocket);
 		this.topicContext = topicContext;
@@ -22,7 +23,9 @@ public class ConnectionPublish extends Thread{
 			Message message = null;
 			try {
 				message = (Message) Marshaller.unmarshall(smh.receive());
-			} catch (ClassNotFoundException e) {
+			} catch (SocketException e) { // significa que a conexão não existe mais
+				// TODO: handle exception
+			}catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
