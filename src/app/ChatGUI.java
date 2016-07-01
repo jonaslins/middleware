@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -42,25 +44,34 @@ public class ChatGUI extends JFrame implements MessageListener {
 
 	public ChatGUI(String title) throws Exception {
 		super(title);
-		showChatLists();
+		
 		buildGUI();
 		connectChat();
 	}
 	
-	public void showChatLists(){
+	public List<String> getChatListFromServer(){
+		List<String> chatNames = new ArrayList<>();
+		chatNames.add("musica");
+		return chatNames;
+	}
+	
+	public JList getChatList(){
 		
 		DefaultListModel listModel = new DefaultListModel();
-		listModel.addElement("Jane Doe");
-		listModel.addElement("John Smith");
-		listModel.addElement("Kathy Green");
+		List<String> chatNameList = getChatListFromServer();
+		
+		for (String string : chatNameList) {
+			listModel.addElement(string);
+		}
+		
 		JList list = new JList(listModel); //data has type Object[]
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setVisibleRowCount(-1);
 		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 		
-		add(list, BorderLayout.SOUTH);
+		return list;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -116,12 +127,13 @@ public class ChatGUI extends JFrame implements MessageListener {
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
-
+		add(getChatList(), BorderLayout.WEST);
 		Box box = Box.createHorizontalBox();
 		add(box, BorderLayout.SOUTH);
 		inputTextField = new JTextField();
 		sendButton = new JButton("Send");
 		box.add(inputTextField);
+//		box.add(getChatList());
 		box.add(sendButton);
 
 		// Action for the inputTextField and the goButton
