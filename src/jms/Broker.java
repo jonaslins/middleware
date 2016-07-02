@@ -3,7 +3,9 @@ package jms;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class Broker implements Runnable{
 
@@ -28,17 +30,19 @@ public class Broker implements Runnable{
 
 	@Override
 	public void run() {
-		
-			while(true){
-				//inicia uma nova conexão
-				Socket connectionSocket;
-				try {
-				connectionSocket = serverSocket.accept();	
+
+		while(true){
+			//inicia uma nova conexão
+			Socket connectionSocket;
+			try {
+				connectionSocket = serverSocket.accept(); 
 				MessageHandler smh = new MessageHandler(connectionSocket);
 				InterMessage interMessage = (InterMessage) Marshaller.interUnmarshall(smh.receive());
 				String tipo ="susbcriber";
 				if(interMessage.getJMSType()==1){
-					tipo = "publisher";					
+					tipo = "publisher";     
+				}else if(interMessage.getJMSType()==3){
+					tipo = "listarTopicos";
 				}
 				System.out.println("Broker recebeu uma mensagem de um "+tipo);
 				String topicName = interMessage.getJMSDestination();
@@ -46,8 +50,8 @@ public class Broker implements Runnable{
 					TopicContext topicContext = hashtable.get(topicName);
 					String hostName = connectionSocket.getInetAddress().getHostName();
 					topicContext.getSubscribers().add(new Subscriber(hostName, connectionSocket.getPort(),connectionSocket));
-					
-				}else{ //publish
+
+				}else if(interMessage.getJMSType()==1){ //publish
 					TopicContext topicContext = null;
 					if(!hashtable.containsKey(topicName)){
 						hashtable.put(topicName, new TopicContext(topicName));
@@ -58,10 +62,20 @@ public class Broker implements Runnable{
 					}else{
 						topicContext = hashtable.get(topicName);
 					}
-					
+
 					publishThread  = new ConnectionPublisher(connectionSocket, topicContext);
 					publishThread.start();
-					
+
+				}else if(interMessage.getJMSType()==3){ //listar topicos
+					List<String> chaves = new ArrayList<String>(hashtable.keySet());
+					String topics ="";
+					for(String c:chaves){
+						topics += c+",";
+					}
+					InterMessage mensagem = new InterMessage();
+					mensagem.setTextMessage(topics);
+					smh.send(Marshaller.marshall(mensagem));
+					connectionSocket.close();
 				}
 			}catch (Exception e) {
 				System.out.println("erros");

@@ -65,7 +65,8 @@ public class TopicSubscriber extends Thread{
 		while(!cancel){
 		try {
 			Message msg = recive();
-			this.messageListener.onMessage(msg);
+			if(!cancel)
+				this.messageListener.onMessage(msg);
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
