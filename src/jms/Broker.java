@@ -37,7 +37,7 @@ public class Broker implements Runnable{
 			try {
 				connectionSocket = serverSocket.accept(); 
 				MessageHandler smh = new MessageHandler(connectionSocket);
-				InterMessage interMessage = (InterMessage) Marshaller.interUnmarshall(smh.receive());
+				InterMessage interMessage = (InterMessage) Marshaller.unmarshall(smh.receive());
 				String tipo ="susbcriber";
 				if(interMessage.getJMSType()==1){
 					tipo = "publisher";     

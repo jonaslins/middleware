@@ -1,29 +1,26 @@
 package jms;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import com.google.gson.Gson;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class Marshaller {
 	
 	public static byte [] marshall (MessageInterface messageToBeMarshalled) throws IOException{
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		Gson gson = new Gson();
-		String json = gson.toJson(messageToBeMarshalled);
-		byte[] message = json.getBytes();		
-		byteStream.write(message);
-		return message;
+		ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
+		objectStream.writeObject(messageToBeMarshalled);
+		
+		return byteStream.toByteArray();
 	}
 
 	public static MessageInterface unmarshall (byte [] menssageToBeUnmarshalled) throws IOException, ClassNotFoundException{
-		String json = new String(menssageToBeUnmarshalled);
-		Gson gson = new Gson();
-		return gson.fromJson(json, Message.class);  
-	}
-	public static MessageInterface interUnmarshall (byte [] menssageToBeUnmarshalled) throws IOException, ClassNotFoundException{
-		String json = new String(menssageToBeUnmarshalled);
-		Gson gson = new Gson();
-		return gson.fromJson(json, InterMessage.class);  
+		
+		ByteArrayInputStream byteStream = new ByteArrayInputStream(menssageToBeUnmarshalled);
+		ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+		
+		return (MessageInterface) objectStream.readObject();  
 	}
 }

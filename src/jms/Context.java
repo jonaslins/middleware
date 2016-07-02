@@ -37,7 +37,7 @@ public class Context {
 			InterMessage mesg = new InterMessage();
 			mesg.setJMSType(3);//quer lista de topicos
 			smh.send(Marshaller.marshall(mesg));
-			InterMessage interMessage = (InterMessage) Marshaller.interUnmarshall(smh.receive());
+			InterMessage interMessage = (InterMessage) Marshaller.unmarshall(smh.receive());
 			String names = interMessage.getTextMessage();
 			String [] array = names.split(",");
 			for(int i =0;i<array.length;i++){
