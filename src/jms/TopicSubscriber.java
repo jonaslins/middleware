@@ -53,23 +53,24 @@ public class TopicSubscriber extends Thread{
 	}
 	
 	public Message recive() throws IOException, ClassNotFoundException {
-			byte[] m = smh.receive();
-			Message msg = (Message) marshaller.unmarshall(m);
-			return msg;
+		byte[] m = smh.receive();
+		Message msg = (Message) marshaller.unmarshall(m);
+		return msg;
 	}
+	
 	public void setMessageListener(MessageListener listener) throws IOException, ClassNotFoundException {
 			this.messageListener = listener;	
 	}
 	
 	public void run(){
 		while(!cancel){
-		try {
-			Message msg = recive();
-			if(!cancel)
-				this.messageListener.onMessage(msg);
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
+			try {
+				Message msg = recive();
+				if(!cancel)
+					this.messageListener.onMessage(msg);
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

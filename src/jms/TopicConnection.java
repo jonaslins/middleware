@@ -36,23 +36,5 @@ public class TopicConnection {
 			}	
 		}
 	}
-	
-	
-
-//
-//	public BrokerReceiver(int port) throws IOException {
-//		this.port = port;
-//		serverSocket = new ServerSocket(port);
-//	}
-//
-//	@Override
-//	public void run() {
-//		try {
-//			while(true){
-//				//inicia uma nova conexão
-//				Socket connectionSocket = serverSocket.accept();
-//				Marshaller marshaller = new Marshaller();
-//				ServerMessageHandler smh = new ServerMessageHandler(connectionSocket);
-//				Message message = marshaller.unmarshall(smh.receive());
 
 }
