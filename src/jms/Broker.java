@@ -14,10 +14,12 @@ public class Broker implements Runnable{
 	private Thread publishThread ;
 	private Hashtable<String, TopicContext> hashtable;
 	private Thread consumerThread ;
+	private Marshaller marshaller;
 	public Broker(int port) throws IOException {
 		this.port = port;
-		serverSocket = new ServerSocket(port);
-		hashtable = new Hashtable<String, TopicContext>();
+		this.serverSocket = new ServerSocket(port);
+		this.hashtable = new Hashtable<String, TopicContext>();
+		this.marshaller = new Marshaller();
 
 	}
 
@@ -37,7 +39,7 @@ public class Broker implements Runnable{
 			try {
 				connectionSocket = serverSocket.accept(); 
 				MessageHandler smh = new MessageHandler(connectionSocket);
-				InterMessage interMessage = (InterMessage) Marshaller.unmarshall(smh.receive());
+				InterMessage interMessage = (InterMessage) marshaller.unmarshall(smh.receive());
 				String tipo ="susbcriber";
 				if(interMessage.getJMSType()==1){
 					tipo = "publisher";     
@@ -74,7 +76,7 @@ public class Broker implements Runnable{
 					}
 					InterMessage mensagem = new InterMessage();
 					mensagem.setTextMessage(topics);
-					smh.send(Marshaller.marshall(mensagem));
+					smh.send(marshaller.marshall(mensagem));
 					connectionSocket.close();
 				}
 			}catch (Exception e) {

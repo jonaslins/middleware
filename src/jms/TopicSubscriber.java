@@ -6,8 +6,8 @@ import java.net.Socket;
 public class TopicSubscriber extends Thread{
 	private Topic topicDestination; 
 	private Socket socket;
-	Marshaller marshaller;
-	MessageHandler smh;
+	private Marshaller marshaller;
+	private MessageHandler smh;
 	private MessageListener messageListener;
 	boolean cancel = false;
 	
