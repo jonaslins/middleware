@@ -42,7 +42,7 @@ public class ChatGUI extends JFrame implements MessageListener {
 	private JButton sendButton;
 	private DefaultListModel listModel;
 	private ListSelectionModel selectionModel;
-
+	private String userName;
 	
 	// pub/sub sessions
 	private TopicPublisher topicPublisher;
@@ -52,9 +52,10 @@ public class ChatGUI extends JFrame implements MessageListener {
 	
 	private Context context;
 
-	public ChatGUI(Context context, String title) throws Exception {
-		super(title);
+	public ChatGUI(Context context) throws Exception {
+		//super(title);
 		this.context = context;
+		userName();
 		buildGUI();
 		listAvaiableChats();
 //		connectChat();
@@ -67,7 +68,7 @@ public class ChatGUI extends JFrame implements MessageListener {
 		Context ctx = new Context();
 		ctx.bind("connectionFactory", new TopicConnectionFactory("localhost", 8080));
 		
-		JFrame frame = new ChatGUI(ctx, "Client chat");
+		JFrame frame = new ChatGUI(ctx);
 		frame.setSize(600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -157,6 +158,7 @@ public class ChatGUI extends JFrame implements MessageListener {
 
 
 	private void buildGUI() {
+		this.setTitle("Chat usuário: "+userName);
 		listModel = new DefaultListModel();
 		textArea = new JTextArea(20, 50);
 		textArea.setEditable(false);
@@ -183,7 +185,7 @@ public class ChatGUI extends JFrame implements MessageListener {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							if(topicPublisherSession!=null){
-								Message message = topicPublisherSession.createTextMessage(str);
+								Message message = topicPublisherSession.createObjectMessage(new AppMessage(userName, str));
 	
 	//							textArea.append(str);
 	//							textArea.append("\n");
@@ -249,11 +251,29 @@ public class ChatGUI extends JFrame implements MessageListener {
 		});
 	}
 
+	public void userName(){
+		String s = (String)JOptionPane.showInputDialog(
+                getParent(),
+                "Digite o nome do usuário:",
+                "Nome usuário",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                null);
+
+		//If a string was returned, say so.
+		if ((s != null) && (s.length() > 0)) {
+			this.userName = s;
+		}			
+	}
 	@Override
 	public void onMessage(final Message message) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				textArea.append("user > " + message.getTextMessage());
+				AppMessage appmesg = (AppMessage) message.getObjectMessage();
+				String userName = appmesg.getUserName();
+				String mensagem = appmesg.getMessage();
+				textArea.append(userName+" > " + mensagem);
 				textArea.append("\n");
 			}
 		});

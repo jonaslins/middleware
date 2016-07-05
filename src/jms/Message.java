@@ -13,7 +13,7 @@ public class Message implements MessageInterface {
 	private String JMSReplyTo; //Specifies a destination where the consumer should send a reply.
 	private int JMSType; //A value that can be evaluated by a message selector.
 	//body
-	private String TextMessage; //A message whose body contains a Java string, for example an XML message. 
+	private Object objectMessage; //A message whose body contains a Java string, for example an XML message. 
 	
 	
 	public Message() {
@@ -22,7 +22,7 @@ public class Message implements MessageInterface {
 	}
 	public Message(String jMSDestination, String jMSDeliveryMode, long jMSExpiration, int jMSPriority, int jMSMessageID,
 			int jMSRedelivered, String jMSTimestamp, int jMSCorrelationID, String jMSReplyTo, int jMSType,
-			String textMessage) {
+			Object objectMessage) {
 		super();
 		JMSDestination = jMSDestination;
 		JMSDeliveryMode = jMSDeliveryMode;
@@ -34,7 +34,7 @@ public class Message implements MessageInterface {
 		JMSCorrelationID = jMSCorrelationID;
 		JMSReplyTo = jMSReplyTo;
 		JMSType = jMSType;
-		TextMessage = textMessage;
+		this.objectMessage = objectMessage;
 	}
 	
 	
@@ -98,11 +98,11 @@ public class Message implements MessageInterface {
 	public void setJMSType(int jMSType) {
 		JMSType = jMSType;
 	}
-	public String getTextMessage() {
-		return TextMessage;
+	public  Object getObjectMessage () {
+		return objectMessage;
 	}
-	public void setTextMessage(String textMessage) {
-		TextMessage = textMessage;
+	public void setObjectMessage(Object objectMessage) {
+		this.objectMessage = objectMessage;
 	}
 	
 	

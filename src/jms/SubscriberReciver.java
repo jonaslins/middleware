@@ -33,7 +33,6 @@ public class SubscriberReciver implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Subcriber recebeu a mensagem : " +msg.getTextMessage());
 		}
 		
 	}

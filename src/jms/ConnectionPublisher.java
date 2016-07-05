@@ -23,7 +23,6 @@ public class ConnectionPublisher extends Thread{
 			Message message = null;
 			try {
 				message = (Message) Marshaller.unmarshall(smh.receive());
-				System.out.println("o broker recebeu " +message.getTextMessage());
 				topicContext.getMensagens().add((Message) message);
 			} catch (SocketException e) { // significa que a conexão não existe mais
 				// TODO: handle exception

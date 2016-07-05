@@ -25,12 +25,6 @@ public class TopicSession {
 		return topicSubscriber;
 	}
 
-	public Message createTextMessage(String textMessage) {
-		Message message = new Message();
-		message.setTextMessage(textMessage);
-		return message;
-	}
-
 	public TopicSubscriber getTopicSubscriber() {
 		return topicSubscriber;
 	}
@@ -45,6 +39,12 @@ public class TopicSession {
 
 	public void setTopicPublisher(TopicPublisher topicPublisher) {
 		this.topicPublisher = topicPublisher;
+	}
+
+	public Message createObjectMessage(Object object ) {
+		Message message = new Message();
+		message.setObjectMessage(object);
+		return message;
 	}
 
 
